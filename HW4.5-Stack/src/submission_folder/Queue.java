@@ -1,5 +1,5 @@
 package submission_folder;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class allows user to create a queue and operate it as similar to the import operations
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Queue<V> 
 {
-	private ArrayList<V> queueArray; 	// The array list to store any data type element.
+	private V[] queueArray; 	// The array list to store any data type element.
 	private int maxSize = 0;			// The maximum size of the queue.
 	private int frontIndex = -1;		// The front index of the queue. As -1, the queue doesn't exist.
 	private int lastIndex = -1;			// The last index of the queue. As -1, the queue doesn't exist.
@@ -24,7 +24,7 @@ public class Queue<V>
     public Queue(int maxSize) 
     {
     	this.maxSize = maxSize;
-    	this.queueArray = new ArrayList<V>(maxSize);
+    	this.queueArray = (V[]) new Object[maxSize];
     }
 
     /**
@@ -76,7 +76,7 @@ public class Queue<V>
     	
     	else
     	{
-    		return(queueArray.get(frontIndex));
+    		return queueArray[frontIndex];
     	}
     }
     
@@ -92,7 +92,7 @@ public class Queue<V>
     		// Set both frontIndex and lastIndex to point to the first index
     		frontIndex = 0;
     		lastIndex = 0;
-    		queueArray.add(value);
+    		queueArray[lastIndex] = value;
     		currentSize++;
     	}
     	
@@ -105,8 +105,8 @@ public class Queue<V>
     	// Queue is neither empty or full
     	else
     	{
-    		queueArray.add(value);
-    		lastIndex++; // Increment the last index
+    		lastIndex++;
+    		queueArray[lastIndex] = value;	 // Increment the last index
     		currentSize++;
     	}
     }
@@ -126,8 +126,8 @@ public class Queue<V>
     	// Queue has one element
     	else if (frontIndex == lastIndex)
     	{
-    		V headElement = queueArray.get(frontIndex);
-    		queueArray.remove(frontIndex);
+    		V headElement = this.peek();
+    		queueArray[0] = null;
     		
     		// Set both frontIndex and lastIndex to -1, indicating the queue is empty
     		frontIndex = -1; 
@@ -139,8 +139,13 @@ public class Queue<V>
     	// Queue has more than one elements
     	else
     	{
-    		V headElement = queueArray.get(frontIndex);
-    		queueArray.remove(frontIndex);
+    		V headElement = this.peek();
+    		
+    		// "Shift" the values toward the head by replacing the current value with the next
+    		for(int i = 0; i < lastIndex; i++)
+    		{
+    			queueArray[i] = queueArray[i + 1];
+    		}
     		lastIndex--;
     		currentSize--;
     		return headElement;
@@ -162,11 +167,11 @@ public class Queue<V>
     	// Queue has one element
     	else if (frontIndex == lastIndex)
     	{
-    		V headElement = queueArray.get(frontIndex);
-    		queueArray.remove(frontIndex);
+    		V headElement = this.peek();
+    		queueArray[0] = null;
     		
     		// Set both frontIndex and lastIndex to -1, indicating the queue is empty
-    		frontIndex = -1;
+    		frontIndex = -1; 
     		lastIndex = -1;
     		currentSize--;
     		return headElement;
@@ -175,8 +180,13 @@ public class Queue<V>
     	// Queue has more than one elements
     	else
     	{
-    		V headElement = queueArray.get(frontIndex);
-    		queueArray.remove(frontIndex);
+    		V headElement = this.peek();
+    		
+    		// "Shift" the values toward the head by replacing the current value with the next
+    		for(int i = 0; i < lastIndex; i++)
+    		{
+    			queueArray[i] = queueArray[i + 1];
+    		}
     		lastIndex--;
     		currentSize--;
     		return headElement;

@@ -1,5 +1,6 @@
 package submission_folder;
-import java.util.ArrayList;
+
+import java.util.Arrays;
 
 /**
  * This file controls how stack will be handled by the user
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Stack<V>
 {
-	private ArrayList<V> stackArray;// The list that will be used to store the elements. Unable to use array due to the need to store generic object
+	private V[] stackArray; // The array that will be used to store the elements. Unable to use array due to the need to store generic object
 	private int size = 0; 			// The maximum size of the stack
 	private V element; 				// The element that will be added to the array list
 	private int numberOfItem = 0; 	// The number of elements in the stack
@@ -25,7 +26,7 @@ public class Stack<V>
     public Stack(int size)
     {
     	this.size = size; 							// Set the maximum size for stack
-    	this.stackArray = new ArrayList<V>(size); 	// Create the array with the size of size (variable)
+    	this.stackArray = (V[]) new Object[size]; 	// Create the array with the size of size (variable)
     }
     
     /**
@@ -42,9 +43,9 @@ public class Stack<V>
     	}
     	else
     	{
-    		stackArray.add(element); 	// Add element to the arraylist
-    		stackTop++; 				// Increment the index for the new top element
-    		numberOfItem++; 			// Increment the number of items in the arraylist
+    		stackTop++;
+    		stackArray[stackTop] = element; 	// Add element to the new index in the array
+    		numberOfItem++; 					// Increment the number of items in the array
     	}
     }
  
@@ -62,7 +63,7 @@ public class Stack<V>
     	else
     	{
     		V elementToReturn = this.peek();	// Get element from the top of the stack
-    		stackArray.remove(stackTop);		// Remove the element from the top of the stack
+    		stackArray[stackTop] = null;		// Remove the element from the top of the stack
     		stackTop--;							// Decrement the index due to removal of the top element
     		numberOfItem--;						// Decrement the index due to removal of the top element
     		return elementToReturn;
@@ -77,7 +78,7 @@ public class Stack<V>
     {
     	if(isEmpty() == false)
     	{
-    		return stackArray.get(stackTop); // Return the element found on top index
+    		return stackArray[stackTop]; // Return the element found on top index
     	}
     	else
     	{
